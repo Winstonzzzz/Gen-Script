@@ -26,13 +26,10 @@ jobs:
 
     - name: Build EXE
       run: |
-          pyinstaller --onefile --add-data
-          "path\\tp\\api-ms-win-core-path.dll;."
-          generateApiDoc.py
+        pyinstaller --onefile --add-data "path\\to\\api-ms-win-core-path.dll;." generateApiDoc.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: exe
         path: dist/*.exe
-
