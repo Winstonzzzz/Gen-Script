@@ -24,9 +24,13 @@ jobs:
     - name: Install dependencies
       run: pip install pyinstaller
 
+    - name: Install Visual C++ Redistributable
+      run: |
+        choco install vcredist2015 -y
+
     - name: Build EXE
       run: |
-        pyinstaller --onefile --add-data "path\\to\\api-ms-win-core-path.dll;." generateApiDoc.py
+        pyinstaller --onefile generateApiDoc.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
