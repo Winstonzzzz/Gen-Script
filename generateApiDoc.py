@@ -6,8 +6,8 @@ from openpyxl.styles import PatternFill,Border, Side
 from openpyxl import Workbook
 
 # 定义解析注解和类字段的正则表达式
-api_model_property_pattern = re.compile(r'@ApiModelProperty\(value\s*=\s*"([^"]+)"\)')
-json_property_pattern = re.compile(r'@JsonProperty\("([^"]+)"\)')
+api_model_property_pattern = re.compile(r'@ApiModelProperty(?:\(value\s*=\s*"([^"]+)"\)|\("([^"]+)"\))')
+json_property_pattern = re.compile(r'@JsonProperty(?:\("([^"]+)"\)|\("([^"]+)"\))')
 field_pattern = re.compile(r'private\s+([\w<>[\],\s]+)\s+([\w]+);')
 
 # 定义Excel模版文件路径和输出目录
@@ -32,8 +32,8 @@ def parse_java_file(file_path):
     for i in range(len(field_info)):
         field_type = field_info[i][0]
         field_name = field_info[i][1]
-        description = api_model_properties[i]
-        english_name = json_properties[i] if json_properties[i] else field_name
+        description = api_model_properties[i][0] + api_model_properties[i][1]
+        english_name = (json_properties[i][0] + json_properties[i][1]) if (json_properties[i][0] + json_properties[i][1]) else field_name
 
         fields.append((english_name, description, field_type))
 
@@ -151,10 +151,6 @@ def main(request_dir, response_dir):
 
 # 执行主函数
 if __name__ == '__main__':
-    print("请输入请求文件路径 (request_dir):")
-    request_dir = input().strip()
-    print("请输入响应文件路径 (response_dir):")
-    response_dir = input().strip()
+    request_dir = '/Users/wshuobangmacpro/Documents/脚本/request'
+    response_dir = '/Users/wshuobangmacpro/Documents/脚本/response'
     main(request_dir, response_dir)
-    # request_dir = '/Users/wshuobangmacpro/Documents/脚本/request'  # 替换为实际请求文件路径
-    # response_dir = '/Users/wshuobangmacpro/Documents/脚本/response'  # 替换为实际响应文件路径
