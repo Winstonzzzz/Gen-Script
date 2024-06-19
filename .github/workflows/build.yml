@@ -27,7 +27,7 @@ jobs:
 
     - name: Build EXE with custom DLL
       run: |
-        pyinstaller --onefile --add-binary "dlls/api-ms-win-core-path-l1-1-0.dll;." generateApiDoc.py
+        pyinstaller -F generateApiDoc.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
