@@ -28,26 +28,9 @@ jobs:
       run: |
         choco install vcredist2015 -y
 
-    - name: Verify DLL existence
-      shell: pwsh
-      run: |
-        if (Test-Path "C:\Windows\System32\api-ms-win-core-path-1-1-0.dll") {
-          Write-Output "DLL found in System32"
-        } elseif (Test-Path "C:\Windows\SysWOW64\api-ms-win-core-path-1-1-0.dll") {
-          Write-Output "DLL found in SysWOW64"
-        } else {
-          Write-Output "DLL not found"
-          exit 1
-        }
-
     - name: Build EXE
-      shell: pwsh
       run: |
-        if (Test-Path "C:\Windows\System32\api-ms-win-core-path-1-1-0.dll") {
-          pyinstaller --onefile --add-binary "C:\Windows\System32\api-ms-win-core-path-1-1-0.dll;." generateApiDoc.py
-        } elseif (Test-Path "C:\Windows\SysWOW64\api-ms-win-core-path-1-1-0.dll") {
-          pyinstaller --onefile --add-binary "C:\Windows\SysWOW64\api-ms-win-core-path-1-1-0.dll;." generateApiDoc.py
-        }
+        pyinstaller --onefile generateApiDoc.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
