@@ -1,4 +1,4 @@
-name: Build EXE
+name: Build EXE with Custom DLL
 
 on:
   push:
@@ -22,15 +22,12 @@ jobs:
         python-version: '3.x'
 
     - name: Install dependencies
-      run: pip install pyinstaller
-
-    - name: Install Visual C++ Redistributable
       run: |
-        choco install vcredist2015 -y
+        pip install pyinstaller
 
-    - name: Build EXE
+    - name: Build EXE with custom DLL
       run: |
-        pyinstaller --onefile generateApiDoc.py
+        pyinstaller --onefile --add-binary "api-ms-win-core-path-l1-1-0.dll;." generateApiDoc.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
